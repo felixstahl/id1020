@@ -4,8 +4,12 @@ public class main1 {
     public static void main(String[] args) {
         DLL dll = new DLL();
 
-        dll.addBeg("4");
-       // dll.print();
+        dll.add("4", true);
+        dll.add("5", true);
+        dll.add("6", true);
+        dll.print();
+
+        DLL.Node remove = dll.remove(true);
 
     }
 }

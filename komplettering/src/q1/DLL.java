@@ -5,90 +5,74 @@ package q1;
  *       Author: Felix Ståhl
  *       Extra lab - Question 1
  *       Based on "Algorithms, 4th Edition" by Robert Sedgewick & Kevin Wayne
- * Implementation of a double linked list with a sentinel node
+ * Implementation of a double linked (circular if wanted) list with a sentinel node
  *
  * Implement a double linked list with a sentinel element. The API should have four methods (no more) to:
- * i)   A method to create a new list instantiated with some type of elements (data stored in the list) defined at the time the list is created
- * ii)  A method to insert an element at the beginning of the list
- * iii) A method to insert an element at the end of the list
- * iv)  A method to remove and return the first element in the list
- * v)   A method to remove and return the last element of the list
+ * 1) A method to create a new list instantiated with some type of elements (data stored in the list) defined at the time the list is created
+ * 2) A method to insert an element at the beginning of the list
+ * 3) A method to insert an element at the end of the list
+ * 4) A method to remove and return the first element in the list
+ * 5) A method to remove and return the last element of the list
  *
- * vi)  You should calculate the Big-Oh complexities for insertion and removal of elements
+ * 1) is constructor
+ * 2/3 is add
+ * 4/5 is remove and return
  *
- *
- * i)   create new list & insert in beginning   i) & ii)
- * ii)  insert in the end    iii)
- * iii) remove first    iv)
- * iv)  remove last     v)
- *
+ * Time complexity:
+ * Insert = O(1)
+ * Remove = O(1)
  */
 public class DLL {
-    private Node sentinel;
-    private class Node<Item> {
+    private Node sentinel = new Node();
+    public DLL(){
+        this.sentinel.next = this.sentinel;
+        this.sentinel.prev = this.sentinel;
+    }
+    public class Node<Item> {
         Item item;
-        Node next;
-        Node prev;
+        Node next;  // first for sentinel
+        Node prev;  // last for sentinel
     }
 
-    public <Item> void addBeg(Item value){
-        if(this.sentinel.next == null && this.sentinel.prev == null){
-            sentinel.next = new Node();
-            sentinel.prev = sentinel.next;
-            sentinel.next.item = value;
-        }
-        else{
-            sentinel.next.prev = new Node();
-            sentinel.next.prev.next = sentinel.next;
-            sentinel.next = sentinel.next.prev;
+    public <Item> void add(Item value, boolean location){
+        Node tmp = new Node();
+        if (location) {                 // true = add node front
+            sentinel.next.prev = tmp;
+            tmp.next = sentinel.next;
+           //tmp.prev = sentinel;       // uncomment this to make it circular
+            sentinel.next = tmp;
+            tmp.item = value;
+        } else {                        // false = add node back
+            sentinel.prev.next = tmp;
+            tmp.prev = sentinel.prev;
+            //tmp.next = sentinel;      // uncomment this to make it circular
+            sentinel.prev = tmp;
+            tmp.item = value;
         }
     }
+    public <Item> Node remove(boolean location){
+        if(location) {                      // true = remove and return front node
+            Node tmp = sentinel.next;
+            sentinel.next = tmp.next;
+            sentinel.next.prev = sentinel;
+            return tmp;
+        }else{                              // false = remove and return back node
+            Node tmp = sentinel.prev;
+            sentinel.prev = tmp.prev;
+            sentinel.prev.next = sentinel;
+            return tmp;
+        }
+    }
+
     public void print(){
-        System.out.println(sentinel.next);
-        System.out.println(sentinel.prev);
+        System.out.println(sentinel.next.item);
+        System.out.println(sentinel.prev.item);
     }
-    /*
-    public class Node {
 
-        public int value;
-        public Node prev;
-        public Node next;
-
-        public Node(){
-            value = Integer.MIN_VALUE;
-            prev = null;
-            next = null;
-        }
-        public Node(int value) {
-            this.value = value;
-        }
-        public void addAfter(Node newCell) {
-            newCell.next = this.next;
-            newCell.prev = this;
-
-            this.next = newCell;
-            newCell.next.prev = newCell;
-        }
-        public void addBefore(Node newCell) {
-            newCell.next = this;        // a --- b
-            newCell.prev = this.prev;   // a --- nC --- b
-
-            this.prev.next = newCell;
-            this.prev = newCell;
-        }
-        public void remove() {
-            this.prev.next = this.next;
-            this.next.prev = this.prev;
-        }
-    }*/
-
-
-    public static void main(String[] args){
+   /* public static void main(String[] args){
         System.out.println("Double linked list with a sentinel element: ");
         DLL dll = new DLL();
 
 
-
-
-    }
+    }*/
 }
