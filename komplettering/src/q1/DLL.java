@@ -1,5 +1,7 @@
 package q1;
 
+import java.util.Scanner;
+
 /**
  *              README
  *       Author: Felix Ståhl
@@ -22,6 +24,7 @@ package q1;
  * Insert = O(1)
  * Remove = O(1)
  */
+
 public class DLL {
     private Node sentinel = new Node();
     public DLL(){
@@ -36,10 +39,10 @@ public class DLL {
 
     public <Item> void add(Item value, boolean location){
         Node tmp = new Node();
-        if (location) {                 // true = add node front
+        if(location) {                 // true = add node front
             sentinel.next.prev = tmp;
             tmp.next = sentinel.next;
-           //tmp.prev = sentinel;       // uncomment this to make it circular
+            //tmp.prev = sentinel;       // uncomment this to make it circular
             sentinel.next = tmp;
             tmp.item = value;
         } else {                        // false = add node back
@@ -51,6 +54,10 @@ public class DLL {
         }
     }
     public <Item> Node remove(boolean location){
+        if(sentinel.next == sentinel){
+            return  ;
+
+        }
         if(location) {                      // true = remove and return front node
             Node tmp = sentinel.next;
             sentinel.next = tmp.next;
@@ -64,15 +71,7 @@ public class DLL {
         }
     }
 
-    public void print(){
-        System.out.println(sentinel.next.item);
-        System.out.println(sentinel.prev.item);
+    public static void main(String[] args){
+
     }
-
-   /* public static void main(String[] args){
-        System.out.println("Double linked list with a sentinel element: ");
-        DLL dll = new DLL();
-
-
-    }*/
 }
