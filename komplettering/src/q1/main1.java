@@ -34,7 +34,7 @@ public class main1 {
                 break;
 
             if(inputArray.length <= 2) {
-                StdOut.println("Wrong input");
+                StdOut.println("Wrong input 1");
                 continue;
             }
 
@@ -55,15 +55,17 @@ public class main1 {
                     break;
 
                 case "3":
-                    dll.remove(true);
+                    DLL.Node node = dll.remove(true);
+                    StdOut.println(node);
                     break;
 
                 case "4":
-                    dll.remove(false);
+                    DLL.Node node1 = dll.remove(false);
+                    StdOut.println(node1);
                     break;
 
-                default:
-                    StdOut.println("wrong input");
+                //default:
+                  //  StdOut.println("wrong input");
             }
         }
 
