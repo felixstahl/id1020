@@ -8,6 +8,8 @@ import java.util.Scanner;
  *       Extra lab - Question 1
  *       Based on "Algorithms, 4th Edition" by Robert Sedgewick & Kevin Wayne
  * Implementation of a double linked (circular if wanted) list with a sentinel node
+ * The execution time complexity should be near linear compared to the time it takes to read the input file.
+ * That is you need to show that your algorithm meets this constraint.
  *
  * To read from command line, dont open CMD, just
  *
