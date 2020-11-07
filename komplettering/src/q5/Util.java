@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 /**
  *              README
  *       Author: Felix Ståhl
- *       Extra lab - Question 1
+ *       Extra lab - All questions
  *       Based on "Algorithms, 4th Edition" by Robert Sedgewick & Kevin Wayne
  * Implementation of a utility class to, for example, read from files and test classes
 
@@ -27,7 +27,6 @@ public class Util {
 
     private static void readFromFile(File file, Consumer<String> doSomethingWithLine) {
         String line;
-        //String[] lineWords;
         try {
             Scanner scanner = new Scanner(file);
             scanner.useDelimiter(" +");

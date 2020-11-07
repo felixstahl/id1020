@@ -11,64 +11,66 @@ import java.util.Scanner;
  * The execution time complexity should be near linear compared to the time it takes to read the input file.
  * That is you need to show that your algorithm meets this constraint.
  *
- * To read from command line, dont open CMD, just
- *
- * comment out parts of:
- * line 26, like this      String fileName; //= "C:\\Users\\mr_...
- *
- * and UNcomment
- *  line 29, like this     fileName = scan.nextLine();
  */
 public class Spelling {
 
+    private static final String COMMON_ERRORS = "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q4\\words.txt";
     private static final int MISSPELLINGS_COUNT = 4285;
     private static String[] misspellings = new String[MISSPELLINGS_COUNT];
-
     private static int misspellingsCount = 0;
 
     public static void main(String[] args) {
-        File words = new File("C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q4\\words.txt");
-
         Scanner scan = new Scanner(System.in);
-        String fileName; //= "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q4\\misspelled.txt";
-        fileName = scan.nextLine();
-        File file = new File(fileName);
 
-        try {
-            Util.readWordsFromFile(words, (word) -> {
-                if (isGoodWord(word)) {
-                    misspellings[misspellingsCount++] = word;
-                }
-            });
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-            String line;
-            String[] lineWords;
-            File fixedFile = new File(makeFixedFileName(fileName));
-            fixedFile.createNewFile();
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fixedFile));
-            StringBuilder builder = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                String[] characters = line.split("");
-                for (int i = 0; i < characters.length; i++) {
-                    if (Util.isLetterOrDigit(characters[i])) {
-                        builder.append(characters[i]);
-                        try {
-                            if (!Util.isLetterOrDigit(characters[i + 1])) {
-                                writeCorrection(writer, builder);
-                            }
-                        } catch (IndexOutOfBoundsException ignored) {
-                            writeCorrection(writer, builder);
-                        }
-                    } else {
-                        writer.write(characters[i]);
+        if(args.length == 1 && args[0].equals("test")){ // run test cases
+            runTest();
+        } else {
+
+            File words = new File(COMMON_ERRORS);
+
+            System.out.println("Enter the name of the file with errors (including .txt)");
+            String fileName = "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q4\\" + scan.nextLine();
+            File file = new File(fileName);
+
+            try {
+                Util.readWordsFromFile(words, (word) -> {
+                    if (isGoodWord(word)) {
+                        misspellings[misspellingsCount++] = word;
                     }
-                }
-                writer.write(System.lineSeparator());
-            }
-            writer.close();
+                });
+                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+                String line;
+                //String[] lineWords;
+                File fixedFile = new File(makeFixedFileName(fileName));     // create a new file for corrected words
+                fixedFile.createNewFile();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fixedFile));
+                StringBuilder sb = new StringBuilder();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                while ((line = reader.readLine()) != null) {
+                    String[] characters = line.split("");
+                    for (int i = 0; i < characters.length; i++) {
+
+                        if (Util.isLetterOrDigit(characters[i])) {
+                            sb.append(characters[i]);
+                            try {
+                                if (!Util.isLetterOrDigit(characters[i + 1])) {
+                                    writeCorrection(writer, sb);
+                                }
+                            } catch (IndexOutOfBoundsException ignored) {
+                                writeCorrection(writer, sb);
+                            }
+                        } else {
+                            writer.write(characters[i]);
+                        }
+
+                    }
+                    writer.write(System.lineSeparator());
+                }
+                writer.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -119,55 +121,57 @@ public class Spelling {
         return misspellingWithArrow.compareToIgnoreCase(word) < 0;
     }
 
+    // returns a string containing old file name + '_corrected' to it. corrected words will be stored in this file
     private static String makeFixedFileName(String fileName) {
-        String originalPrefix = fileName.replaceAll("\\.txt", "");
-        return originalPrefix + "_corrected.txt";
+        String originalName = fileName.replaceAll("\\.txt", "");
+        return originalName + "_corrected.txt";
     }
 
-    /*private static void runTestSuite() {
+    private static void runTest() {
         testMakeFixedFileName();
         testGetOptionalCorrection();
         testTrimMisspelling();
     }
 
     private static void testMakeFixedFileName() {
-        String before = "before.txt",
-                expected = "before_fixed.txt",
-                actual = makeFixedFileName(before);
+        String before = "before.txt";
+        String expected = "before_corrected.txt";
+        String actual = makeFixedFileName(before);
 
-        Util.assertTrue(expected.equals(actual), "makeFixedFileName");
+        Util.assertTrue(expected.equals(actual), "incorrect file name");
     }
 
     private static void testGetOptionalCorrection() {
-        File misspellingsFile = new File(MISSPELLINGS_FILE_NAME);
+        File commonErrors = new File(COMMON_ERRORS);
         try {
-            Util.readWordsFromFile(misspellingsFile, (word) -> {
+            Util.readWordsFromFile(commonErrors, (word) -> {
                 if (isGoodWord(word)) {
                     misspellings[misspellingsCount++] = word;
                 }
+                //System.out.println(misspellingsCount);
             });
         } catch (IOException e) {
 
         }
-        String misspeltWord = "currenly",
-                corrected = "currently";
-        Optional<String> actual = getOptionalCorrection(misspeltWord);
+        String misspelledWord = "currenly";
+        String corrected = "currently";
+        Optional<String> actual = getOptionalCorrection(misspelledWord);
 
         Util.assertTrue(actual.isPresent(), "word correction should have been present");
         Util.assertTrue(actual.get().equals(corrected), actual + " should have equaled " + corrected);
 
-        String capitalisedMisspeltWord = "CuRrEnLy";
-        actual = getOptionalCorrection(capitalisedMisspeltWord);
+        String capitalisedMisspelledWord = "CuRrEnLy";
+        actual = getOptionalCorrection(capitalisedMisspelledWord);
 
         Util.assertTrue(actual.isPresent(), "word correction should have been present");
         Util.assertTrue(actual.get().equals(corrected), actual + " should have equaled " + corrected);
     }
 
     private static void testTrimMisspelling() {
-        String before = "derp->herp",
-                expected = "derp",
-                actual = trimMisspelling(before);
+        String before = "elephant->tests";
+        String expected = "elephant";
+        String actual = trimMisspelling(before);
 
-        Util.assertTrue(actual.equals(expected), "misspelling string should be trimmed");
-    }*/
+        Util.assertTrue(actual.equals(expected), "misspelled string should be trimmed");
+    }
 }
