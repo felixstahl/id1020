@@ -21,8 +21,8 @@ import java.util.Scanner;
  */
 public class ShortestPath {
 
-    private static final String FILE_NAME = "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q5\\NYC.txt";
-    private static final String TEST_FILE_NAME = "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q5\\TestNYC.txt";
+    private static final String FILE_NAME = "NYC.txt";
+    private static final String TEST_FILE_NAME = "TestNYC.txt";
     private static final int NUM_VERTICES = 264346;
     private static final int NUM_EDGES = 733846;
 
