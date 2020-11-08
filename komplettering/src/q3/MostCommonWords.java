@@ -1,4 +1,4 @@
-package q3;
+package src.q3;
 
 import java.io.*;
 import java.util.Scanner;
@@ -14,7 +14,7 @@ public class MostCommonWords { //} implements Testable {
         if (args.length == 1 && args[0].equals("test")) {
             runTestSuite();
         } else {//if (args.length >= 2) {
-            String fileName = "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q3\\leipzig1m.txt";
+            String fileName = "/home/linusberg/IdeaProjects/felixproj/src/src/q3/leipzig1m.txt";
             File file = new File(fileName);
             words = new Map(BIG_PRIME);
             try {
@@ -29,6 +29,7 @@ public class MostCommonWords { //} implements Testable {
                         words.add(stripOfPunctuation(word));
                     }
                 }
+                System.out.println("all words have had their punctuation stripped added to map");
 
                 sortedArray = new String[words.size()];
                 int arraySize = 0;
@@ -39,13 +40,13 @@ public class MostCommonWords { //} implements Testable {
 
                 sort(sortedArray);
 
-                if (args.length == 2) {
-                    int args1 = new Integer(args[1]);
-                    printMostCommonWord(args1);
-                } else if (args.length == 3) {
-                    int args1 = new Integer(args[1]),
-                            args2 = new Integer(args[2]);
-                    printMostCommonWords(args1, args2);
+                if (args.length == 1) {
+                    int args0 = Integer.valueOf(args[0]);
+                    printMostCommonWord(args0);
+                } else if (args.length == 2) {
+                    int args0 = Integer.valueOf(args[0]);
+                    int args1 = Integer.valueOf(args[1]);
+                    printMostCommonWords(args0, args1);
                 }
 
             } catch (IOException e) {
@@ -55,7 +56,6 @@ public class MostCommonWords { //} implements Testable {
     }
 
     private static String stripOfPunctuation(String word) {             // remove punctuation from word.
-        System.out.println(word);
         while (!Util.isLetterOrDigit(word.charAt(word.length() - 1))) {
             word = word.substring(0, word.length() - 1);
         }
@@ -112,7 +112,8 @@ public class MostCommonWords { //} implements Testable {
     }
 
     public static void printMostCommonWord(int rank) {
-        System.out.println(rank + ": " + sortedArray[rank - 1] + " - " + words.get(sortedArray[rank - 1]) + " occurrences");
+        System.out.print("You asked for the " + rank + " which is: '");
+        System.out.println(sortedArray[rank - 1] + "', occuring times: " + words.get(sortedArray[rank - 1]));
     }
 
     public static void printMostCommonWords(int startRank, int endRank) {
