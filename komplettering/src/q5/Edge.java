@@ -1,4 +1,4 @@
-package q5;
+package src.q5;
 
 /**
  *              README
