@@ -1,4 +1,4 @@
-package q3;
+package src.q3;
 
 public class Map {
     private LinkedList[] words;

@@ -1,4 +1,4 @@
-package q3;
+package src.q3;
 import java.io.*;
 import java.util.Scanner;
 import java.util.function.Consumer;
