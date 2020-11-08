@@ -312,14 +312,18 @@ public class ShortestPath {
             System.out.println("does source have path detour?      " + mainRoute.hasPathTo(detourTest1));
             System.out.println("does detour have path destination? " + detourRoute.hasPathTo(destinationTest));
 
-            // following segment prints the path it takes
-            Stack<Edge> pathToDet = mainRoute.pathTo(detourTest1);
-            Stack<Edge> pathToDes = detourRoute.pathTo(destinationTest);
-            while (!pathToDet.isEmpty()) {
-                System.out.println(pathToDet.pop().head);
-            }
-            while (!pathToDes.isEmpty()) {
-                System.out.println(pathToDes.pop().head);
+            if(mainRoute.hasPathTo(detourTest1) && detourRoute.hasPathTo(destinationTest)) {
+                // following segment prints the path it takes
+                Stack<Edge> pathToDet = mainRoute.pathTo(detourTest1);
+                Stack<Edge> pathToDes = detourRoute.pathTo(destinationTest);
+                while (!pathToDet.isEmpty()) {
+                    System.out.println(pathToDet.pop().head);
+                }
+                while (!pathToDes.isEmpty()) {
+                    System.out.println(pathToDes.pop().head);
+                }
+            } else {
+                System.out.println("No path available");
             }
         }
     }
