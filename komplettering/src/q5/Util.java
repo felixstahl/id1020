@@ -1,4 +1,4 @@
-package src.q5;
+package q5;
 import java.io.*;
 import java.util.Scanner;
 import java.util.function.Consumer;

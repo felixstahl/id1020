@@ -1,4 +1,4 @@
-package src.q5;
+package q5;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -21,8 +21,8 @@ import java.util.Scanner;
  */
 public class ShortestPath {
 
-    private static final String FILE_NAME = "/home/linusberg/IdeaProjects/felixproj/src/src/q5/NYC.txt";
-    private static final String TEST_FILE_NAME = "/home/linusberg/IdeaProjects/felixproj/src/src/q5/TestNYC.txt";
+    private static final String FILE_NAME = "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q5\\NYC.txt";
+    private static final String TEST_FILE_NAME = "C:\\Users\\mr_fe\\Desktop\\Algo\\Algo2\\nya\\komplettering\\src\\q5\\TestNYC.txt";
     private static final int NUM_VERTICES = 264347;
     private static final int NUM_EDGES = 733846;
 
@@ -117,14 +117,14 @@ public class ShortestPath {
         queue = new Queue<Double>(graph.vertices());
         queue.insert(s, distTo[s]);
         while (!queue.isEmpty()) {                  // traverse all nodes
-            System.out.println("here");
+            //System.out.println("here");
             int min = queue.delMin();
             for (Edge e : graph.adjacents(min)) {
-                System.out.println("here2");
+              //  System.out.println("here2");
                 relax(e);
             }
         }
-        System.out.println("done shortest path");
+        //System.out.println("done shortest path");
     }
 
     // every edge is relaxed exactly once. however, as multiple edges can be directed towards a node, the distance to
@@ -164,7 +164,7 @@ public class ShortestPath {
     }
 
     // nested class indexed priority queue  (min binary heap), used by dijkstras algorithm (and relaxing of edges, a part of dijkstra)
-    // priority queue is used in dijkstras algorithm to select the new vertex to 'traverse' to.
+    // priority queue is used in dijkstras algorithm to select the next vertex to 'traverse' to. (with shortest distance)
     private class Queue<Item extends Comparable<Item>> {
         private int size;       // number of elements in queue
         private int[] pq;       // binary heap 1-based indexing
@@ -195,8 +195,8 @@ public class ShortestPath {
         // associate key with index i
         public void insert(int i, Item key) {
             size++;
-            qp[i] = size;
-            pq[size] = i;
+            qp[i] = size;   //
+            pq[size] = i;   //
             keys[i] = key;
             swim(size);
         }
@@ -206,9 +206,7 @@ public class ShortestPath {
             int min = pq[1];
             swap(1, size--);
             sink(1);
-            qp[min] = -1;        // delete
-            keys[min] = null;    // to help with garbage collection
-            pq[size+1] = -1;
+            qp[min] = -1;
             return min;
         }
 
@@ -226,7 +224,7 @@ public class ShortestPath {
             qp[pq[j]] = j;
         }
 
-        //
+        // when a new key is lower than the old key it needs to go up in the heap
         private void swim(int k) {
             while (k > 1 && greater(k/2, k)) {
                 swap(k, k/2);
@@ -234,20 +232,22 @@ public class ShortestPath {
             }
         }
 
-        //
-        private boolean greater(int i, int j) {
-            return keys[pq[i]].compareTo(keys[pq[j]]) > 0;
-        }
-
-        //
+        // when a new key is higher than the old key it has to go down
         private void sink(int k) {
             while (2*k <= size) {
                 int j = 2*k;
-                if (j < size && greater(j, j+1)) j++;
-                if (!greater(k, j)) break;
+                if (j < size && greater(j, j+1))
+                    j++;
+                if (!greater(k, j))
+                    break;
                 swap(k, j);
                 k = j;
             }
+        }
+
+        // returns true if
+        private boolean greater(int i, int j) {
+            return keys[pq[i]].compareTo(keys[pq[j]]) > 0;
         }
     }
 

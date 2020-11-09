@@ -1,4 +1,4 @@
-package src.q5;
+package q5;
 import java.util.Iterator;
 
 /**
@@ -19,7 +19,7 @@ public class Digraph {
     // directed graph constructor
     public Digraph(int vertices) {
         this.vertices = vertices;
-        this.edges = 0;
+        this.edges = 0; //edges;
         this.indegree = new int[vertices];
         adjacents = new Bag[vertices];
         for (int i = 0; i < vertices; i++) {
