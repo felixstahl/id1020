@@ -11,12 +11,21 @@ import java.util.Scanner;
 
  */
 public class QuickSort {
-
+    private static <U extends Comparable> void insertionsort(U[] array) {
+        int size = array.length;
+        for (int i = 1; i < size; i++) {
+            for (int j = i; j > 0 && array[j].compareTo(array[j - 1]) < 0; j--) {
+                Util.swap(array, j, j - 1);
+            }
+        }
+    }
     // cutoff to insertion sort, must be >= 1
-    private static final int CUTOFF = 8;
+    private static int CUTOFF = 8;
 
     // This class should not be instantiated.
-    private QuickSort() { }
+    public QuickSort(int cutoff) {
+        CUTOFF = cutoff;
+    }
 
     //Rearranges the array in ascending order, using the natural order.
     public static void sort(Comparable[] a) {
@@ -32,7 +41,7 @@ public class QuickSort {
         // cutoff to insertion sort (Insertion.sort() uses half-open intervals)
         int n = hi - lo + 1;
         if (n <= CUTOFF) {
-            //Insertion.sort(a, lo, hi + 1);
+            Insertion.sort(a, lo, hi + 1);
             return;
         }
 
